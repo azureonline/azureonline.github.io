@@ -29,7 +29,7 @@ def bar_with_plotly():
 
     yf.pdr_override()
     #dwl_df = yf.download(tickers=stock, start=startdate, end=enddate, interval='1d',period='60d')
-    dwl_df = yf.download(tickers=stock, period='1d', interval='30m')
+    dwl_df = yf.download(tickers=stock, period='1d', interval='15m')
     dwl_df.reset_index(inplace=True) 
     dwl_df[['Open','High','Low','Close','Adj Close']] = dwl_df[['Open','High','Low','Close','Adj Close']].round(2)
 
