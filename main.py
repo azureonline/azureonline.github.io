@@ -107,3 +107,4 @@ class StockDataPattern:
             appended_data = appended_data._append(data,ignore_index=True)
         appended_data = appended_data.sort_values(by='Datetime',ascending=[False])
         return appended_data
+
