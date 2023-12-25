@@ -1,0 +1,68 @@
+<html>
+<head>
+<title> Stock Data summary page</title>
+<meta http-equiv="refresh" content="300" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+function drawTable(data) {
+
+  // Get Table headers and print
+  var head = $("<tr />")
+  $("#DataTable").append(head);
+  for (var j = 0; j < Object.keys(data[0]).length; j++) {
+    head.append($("<th>" + Object.keys(data[0])[j] + "</th>"));
+  }
+  // Print the content of rows in DataTable
+  for (var i = 0; i < data.length; i++) {
+    drawRow(data[i]);
+  }
+
+}
+
+function drawRow(rowData) {
+  var row = $("<tr />")
+  $("#DataTable").append(row);
+  row.append($("<td>" + rowData["Symbol"] + "</td>"));
+  row.append($("<td>" + rowData["Datetime"] + "</td>"));
+  row.append($("<td>" + rowData["Open"] + "</td>"));
+  row.append($("<td>" + rowData["High"] + "</td>"));
+  row.append($("<td>" + rowData["Low"] + "</td>"));
+  row.append($("<td>" + rowData["Close"] + "</td>"));
+  var cellcolor = "#9af764";
+  if ( rowData["Crossover"]  < 0 ) cellcolor = "#fc5a50";
+  row.append($("<td style='background-color:" + cellcolor + "'>" + rowData["Crossover"] + "</td>"));
+}
+</script>
+<style>
+table {
+  border: 1px solid #666;
+  text-align: center;
+}
+
+th {
+  background: #f8f8f8;
+  font-weight: bold;
+  padding: 2px;
+  border: 1px solid #666;
+}
+td	{
+  border: 1px solid #666;
+}
+
+</style>
+</head>
+<body>
+<div>
+	<table id="DataTable"></table>
+	<script>
+		$(document).ready(function () {
+			$.getJSON('/returnjson', 
+				function (data) {
+					var objd = $.parseJSON(data);
+					drawTable(objd);
+			});
+		});
+	</script>
+</div>
+</body>
+</html>
