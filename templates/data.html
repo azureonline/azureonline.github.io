@@ -8,7 +8,7 @@ function drawTable(data) {
 
   // Get Table headers and print
   var head = $("<tr />")
-  $("#DataTable").append(head);
+  $("#DataStrategy").append(head);
   for (var j = 0; j < Object.keys(data[0]).length; j++) {
     head.append($("<th>" + Object.keys(data[0])[j] + "</th>"));
   }
@@ -17,11 +17,19 @@ function drawTable(data) {
     drawRow(data[i]);
   }
 
+
+		
+		$.getJSON('/returnPattern', 
+			function (data) { 
+				var objd = $.parseJSON(data);
+				drawPatternTable(objd); 
+		});
+
 }
 
 function drawRow(rowData) {
   var row = $("<tr />")
-  $("#DataTable").append(row);
+  $("#DataStrategy").append(row);
   row.append($("<td>" + rowData["Symbol"] + "</td>"));
   row.append($("<td>" + rowData["Datetime"] + "</td>"));
   row.append($("<td>" + rowData["Open"] + "</td>"));
@@ -31,6 +39,32 @@ function drawRow(rowData) {
   var cellcolor = "#9af764";
   if ( rowData["Crossover"]  < 0 ) cellcolor = "#fc5a50";
   row.append($("<td style='background-color:" + cellcolor + "'>" + rowData["Crossover"] + "</td>"));
+}
+
+function drawPatternTable(data) {
+
+  // Get Table headers and print
+  var head = $("<tr />")
+  $("#DataPattern").append(head);
+  for (var j = 0; j < Object.keys(data[0]).length; j++) {
+    head.append($("<th>" + Object.keys(data[0])[j] + "</th>"));
+  }
+  // Print the content of rows in DataTable
+  for (var i = 0; i < data.length; i++) {
+    drawPatternRow(data[i]);
+  }
+
+}
+
+function drawPatternRow(rowData) {
+  var row = $("<tr />")
+  $("#DataPattern").append(row);
+  row.append($("<td>" + rowData["Symbol"] + "</td>"));
+  row.append($("<td>" + rowData["Datetime"] + "</td>"));
+  row.append($("<td>" + rowData["Day_High"] + "</td>"));
+  row.append($("<td>" + rowData["Day_Low"] + "</td>"));
+  row.append($("<td>" + rowData["LastRow_High"] + "</td>"));
+  row.append($("<td>" + rowData["LastRow_Low"] + "</td>"));
 }
 </script>
 <style>
@@ -53,16 +87,23 @@ td	{
 </head>
 <body>
 <div>
-	<table id="DataTable"></table>
-	<script>
-		$(document).ready(function () {
-			$.getJSON('/returnjson', 
-				function (data) {
-					var objd = $.parseJSON(data);
-					drawTable(objd);
-			});
-		});
-	</script>
+<table>
+	<tr>
+		<td style="vertical-align:top"><table id="DataStrategy"></table></td>
+		<td style="width:75px">&nbsp;</td>
+		<td style="vertical-align:top"><table id="DataPattern"></table></td>
+	</tr>
+</table>
 </div>
+<script>
+	$(document).ready(function () { 
+		 $.getJSON('/returnStrategy',  
+			 function (data) { 
+				 var objd = $.parseJSON(data); 
+				 drawTable(objd); 
+		 }); 
+		
+	});
+</script>
 </body>
 </html>
