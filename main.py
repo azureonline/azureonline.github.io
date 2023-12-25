@@ -1,4 +1,4 @@
-from flask import Flask,jsonify,request,json,render_template
+from flask import Flask,json,render_template
 import pandas as pd
 import matplotlib.pyplot as plt 
 import numpy as np
@@ -53,17 +53,6 @@ def ReturnPattern():
     data = df1.to_json(orient='records', index=False)
     response = app.response_class(response=json.dumps(data),status=200,mimetype='application/json')
     return response
-
-def DownloadStockData():
-    yf.pdr_override()
-    for x in stocksymbols:    
-        sdf = yf.download(tickers=x, period='1d', interval='5m')
-        print('------------------SDF----------------')
-        print(sdf)
-        #sdf[['Open','High','Low','Close','Adj Close']] = sdf[['Open','High','Low','Close','Adj Close']].round(2)
-        filtered_col_df = sdf[['Datetime','Open','High','Low','Close']].copy()
-        filtered_col_df['Datetime'] = pd.to_datetime(filtered_col_df['Datetime'])
-        all_df.loc[len(all_df)] = [x, sdf]
     
 class StockDataCustomStrategy:
   
