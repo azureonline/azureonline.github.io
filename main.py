@@ -18,9 +18,9 @@ initial_wealth = '1000'
 stocksymbols = ['SPY','QQQ','IWM','DIA','SMH']
 
 from datetime import date, timedelta
-today = date.today()
+today = date.today() + timedelta(days=1)
 end_date = today.strftime("%Y-%m-%d")
-prevdayrange = today- timedelta(days=6)
+prevdayrange = today- timedelta(days=4)
 start_date = prevdayrange.strftime("%Y-%m-%d")   
 
 all_df = pd.DataFrame(columns=['Symbol', 'History'])
@@ -57,7 +57,7 @@ def ReturnPattern():
 def DownloadStockData():
     yf.pdr_override()
     for x in stocksymbols:    
-        sdf = yf.download(tickers=x, period='1d', interval='5m')
+        sdf = yf.download(tickers=x, period='1d', interval='5m', start=start_date, end = end_date)
         sdf.reset_index(inplace=True) 
         sdf['Datetime'] = pd.to_datetime(sdf['Datetime']).dt.strftime('%H:%M')
         sdf[['Open','High','Low','Close','Adj Close']] = sdf[['Open','High','Low','Close','Adj Close']].round(2)
